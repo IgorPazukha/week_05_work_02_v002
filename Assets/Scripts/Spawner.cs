@@ -4,33 +4,28 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private int _objectCount;
-    [SerializeField] private Enemy _enemy;
-
+    [SerializeField] private GameObject _character;
+    [SerializeField] private int _characterCount;
     private int _minValue = -5;
     private int _maxValue = 5;
     private int _xPosition;
     private int _zPosition;
+    private int _yPosition = 0;
 
-    private void Start()
+    void Start()
     {
         StartCoroutine(Scatter());
     }
 
     private IEnumerator Scatter()
     {
-        int waitSecond = 2;
-        var waitTime = new WaitForSeconds(waitSecond);
-
-        while (_objectCount > 0)
+        while(_characterCount > 0)
         {
             _xPosition = Random.Range(_minValue, _maxValue);
             _zPosition = Random.Range(_minValue, _maxValue);
-            Instantiate(_enemy, new Vector2(_xPosition, _zPosition), Quaternion.identity);
-
-            _objectCount--;
-
-            yield return waitTime;
+            Instantiate(_character, new Vector3(_xPosition, _yPosition, _zPosition), Quaternion.identity);
+            yield return new WaitForSeconds(2f);
+            _characterCount--;
         }
     }
 }
